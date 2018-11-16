@@ -1,0 +1,75 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ToDoList</title>
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <!-- google fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100" rel="stylesheet">
+    <!-- my style -->
+    <link rel="stylesheet" href="{% static 'css/tstyle.css' %}">
+</head>
+<body class="body1">
+    <nav class="navbar navbar-dark bg-dark">
+        <p class="navbar-brand"><i>{{ user.username }}</i></p>
+        <div class="navbar-nav ml-auto">
+            <a class="nav-item nav-link" href="{% url 'my_logout' %}">Logout</a>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="main">
+            <div class="row">
+                <div class="col text-center">
+                    <h1><i>ToDo List</i></h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <form action="{% url 'add_task' %}", method="post">
+                        {% csrf_token %}
+                        <div class="input-group">
+                            {{ AddToDoForm.name }}
+                            <button type="submite" class="btn">ADD</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="row del">
+                <div class="col-6 text-right">
+                    <p><a href="{% url 'delete_completed' %}"><button type="button" class="btn">Delete Complited</button></a></p>
+                </div>
+                <div class="col-6 text-left">
+                    <p><a href="{% url 'delete_all' %}"><button type="button" class="btn">Delete ALL</button></a></p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="line"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <ul>
+                        {% for t in todolist %}
+                            {% if t.done %}
+    							<a href="{% url 'completed' t.id %}" class="done task"><li class="list-group-item more"><div class="row"><div class="col text-left"><i>{{ t.name }}</i></div><div class="col text-right"><a href="{% url 'edit_one' t.id %}"><img height="30" width="30" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIJSURBVGhD7Zm/S1ZRGMdvZEGKthUkKP4YhMKhmm1tE5xEhwjDH39D0FLQlIMYNRWI/QFJ4uAuuOuibuHQ4pCKUlp9vvfeQ+c93HdzeB44H/hwzz28w/2+5zznPfe8RSaTyWSuiBF8j1/xFXajK57hSzzDTXyHe3iAA+iCGfyDf3FZHTVduI8fyjvjKMQlzuInPMKHGFjEtapplxBCV3EdQ5hH6gBNs49V0yZhOs2Xd/+JwyzhOT5Ak4SR+ImaNjcxJoRRzWgBMEk8nTR99M03hVHNaMS0mpkjDqGCnsamMPHnzJE+XAgi4jAL6CLEKL7FFIVRzWg6mQ8h7uB41Wwh/Zwp4ofrxw1swk0IcQPHqmYLbkJ04vf6muImxC11wHB9jXETQhziYNVswU2IPlRNhBGJcRNCaHVyXdjapd7FJtyEEPrFdv1j97i2CTchxGRtipsQ8Q42xU0I0S6ImxDttuLCdIgXGD+cy614HMLtVnwK9ca2Wt453YpfQ5277uIvfI1NmA4hnuAF9qKOZI4xfacwH0Ks4LeqWQyhDstO8I06wEWIHjzFifKuKDpQL0fP8Td+QfMhxBz+wPT07x6qZswe2aRso/5weYpaqTQy66ia0QLQbltiCr1TqB6kwmhkNM0+o5ZerWYu0B8rIcgW6jD5NrpCNbGDCnNfHV5RENVEJpPJWKIo/gHiTqd1jOo86QAAAABJRU5ErkJggg=="></a><a href="{% url 'delete_one' t.id %}"><img height="30" width="30" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAATESURBVGhD7ZlrqBVVGIZXV5MuphRoRVRi4SWLrCiKoItFCYahFOIFQSPT0CIwqKzoRlBQUURIlz9FpSAJ1Q8JygKlwjBQJMrCICi7Et2jep/vcx1m9qyZs7d77XP2j/PAw/m+WWdm9tp71nXCCINzprxFrkm4Sp4n+56l8h/53yBSqb5lovxNbpVT5GkJJ8mN8i95tuw7DpJvyz/kZA40cLz8Tn4sD+NAP7FE8sistWxwFslO/r8rTpXPyc1t+JPkg71bODaYtKU/W47V+ZI8S3bMofIzybO8XX40zNL2vpdjZUecLvmG6S77gWsln2emZR3AWMCJ8y0LYYx8eP9fOEGSH26Z90b3emicI2/zcADa0RUeGnxJ53to3Cnp7eAQ+YA82bIQLpZ8nlmWdUBrRa6W5PwFjpNPs8zHBfKTLAvhKfmvhwN8KTd5aNCunvYwHCM5/0HLQpgqyW+yLGNFrpTk/IUbJHn8Bm+X5OMtC+Fx+beHA3wuGUMiP8gnPQxHSSp+n2UhnCG53jLLMlbkCHnj/r9wrCQ/2LIQTpSLPTQYHK/3cAB+zeIgeJ3kA0cWyviLMi4xSzjOsi4qwijMiXdbNvzEcedSyzqAb/pDyck/Sh6D4ZTHjjZ2pOwYHh96kq8lffizwyAf/hd5v+Tx7YoN8isPh5z3JE9GFp6Q9ECxYQ8l9HSve9g9cYyYYNnQwmz6GQ+7Z4GkIudaVoVfaraMXXMRRmi6ZcaJFIxLdQ2Y6T73vcuyDFwmuSDznRRxXkZlWmEKQtlcy8oweFI2z7IqzHYpZ2qThfhBb7asCvMhyunrW4kDWRxYizC9oWyOZVWukZTH2UTX8FhwQSZxKeimKV9hWZmmilwgKaub0TKyUx7nc1n4WT7vYQXWLtzwDsvKNFWEClB2oWVV7pGUj7MsE7skK7U6WPg85GGJporwSFFW942vk1w3K1Rip4dJvpVxJlukqSJMEimLa45W3pCfepiPFyXrhzr2yBc8LNFUEToPyuqWr+yyvONhPnhsuGldn79DrvewRFNFaFOU1W0J8Su/7GE+VkpuSlecgjnRWx6WaKoIq8HfPawwSnLeo5ZlJDZMBscUb8r3PSzRVBHmcPs8rMBWFOettiwjbDxzYaYrKV6Vn3hYoqkidOe0rRTxvLpR/4BhLcCF6zaf2cj7wsMSTRV5TaYqDyyTOe8iyzLCoMfOII9DCo6zn9tKU0VoU7StFLdKzuMRyw4rRRZZKZi+MOVupakidR0EPCY5j0afnQ/kNg8r1HWlTRXhseLxSvGK/MbD/LAntdfDCsslH7h1cGuqCA29bv62RTIg9gR2BdnUTi15WTtQzn5UkaMlHUFqGsJW01UeVmADnSlKT2BHhW837ib2Etobk8aeEF/m1C15c8HuIvcpbopnhZ10bpBa0uZkuuQ+LKx6AhvW3ICGHWEtwR5wO7IhfYoEXkMUy1gtRuLOP0vdnhCXtLwXiTDH4li7xq0dZrXF4yzcIrxK4NgBvWprF/r+3TIOVKznZ7QpL3/ieaNlsYytH6DXYxHHFi1bST0j7orz0pMtHtpNLml7rGm4/pC8BeClzq8yPhY5ZWv2EdnTX6MI7xIvkUyzc3m5jC92RhhhhCyE8D/nd6KN+0AUXgAAAABJRU5ErkJggg=="></a></div></div></li></a>
+                            {% else %}
+    							<a href="{% url 'completed' t.id %}" class="task"><li class="list-group-item more"><div class="row"><div class="col text-left"><i>{{ t.name }}</i></div><div class="col text-right"><a href="{% url 'edit_one' t.id %}"><img height="30" width="30" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAIJSURBVGhD7Zm/S1ZRGMdvZEGKthUkKP4YhMKhmm1tE5xEhwjDH39D0FLQlIMYNRWI/QFJ4uAuuOuibuHQ4pCKUlp9vvfeQ+c93HdzeB44H/hwzz28w/2+5zznPfe8RSaTyWSuiBF8j1/xFXajK57hSzzDTXyHe3iAA+iCGfyDf3FZHTVduI8fyjvjKMQlzuInPMKHGFjEtapplxBCV3EdQ5hH6gBNs49V0yZhOs2Xd/+JwyzhOT5Ak4SR+ImaNjcxJoRRzWgBMEk8nTR99M03hVHNaMS0mpkjDqGCnsamMPHnzJE+XAgi4jAL6CLEKL7FFIVRzWg6mQ8h7uB41Wwh/Zwp4ofrxw1swk0IcQPHqmYLbkJ04vf6muImxC11wHB9jXETQhziYNVswU2IPlRNhBGJcRNCaHVyXdjapd7FJtyEEPrFdv1j97i2CTchxGRtipsQ8Q42xU0I0S6ImxDttuLCdIgXGD+cy614HMLtVnwK9ca2Wt453YpfQ5277uIvfI1NmA4hnuAF9qKOZI4xfacwH0Ks4LeqWQyhDstO8I06wEWIHjzFifKuKDpQL0fP8Td+QfMhxBz+wPT07x6qZswe2aRso/5weYpaqTQy66ia0QLQbltiCr1TqB6kwmhkNM0+o5ZerWYu0B8rIcgW6jD5NrpCNbGDCnNfHV5RENVEJpPJWKIo/gHiTqd1jOo86QAAAABJRU5ErkJggg=="></a><a href="{% url 'delete_one' t.id %}"><img height="30" width="30" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAATESURBVGhD7ZlrqBVVGIZXV5MuphRoRVRi4SWLrCiKoItFCYahFOIFQSPT0CIwqKzoRlBQUURIlz9FpSAJ1Q8JygKlwjBQJMrCICi7Et2jep/vcx1m9qyZs7d77XP2j/PAw/m+WWdm9tp71nXCCINzprxFrkm4Sp4n+56l8h/53yBSqb5lovxNbpVT5GkJJ8mN8i95tuw7DpJvyz/kZA40cLz8Tn4sD+NAP7FE8sistWxwFslO/r8rTpXPyc1t+JPkg71bODaYtKU/W47V+ZI8S3bMofIzybO8XX40zNL2vpdjZUecLvmG6S77gWsln2emZR3AWMCJ8y0LYYx8eP9fOEGSH26Z90b3emicI2/zcADa0RUeGnxJ53to3Cnp7eAQ+YA82bIQLpZ8nlmWdUBrRa6W5PwFjpNPs8zHBfKTLAvhKfmvhwN8KTd5aNCunvYwHCM5/0HLQpgqyW+yLGNFrpTk/IUbJHn8Bm+X5OMtC+Fx+beHA3wuGUMiP8gnPQxHSSp+n2UhnCG53jLLMlbkCHnj/r9wrCQ/2LIQTpSLPTQYHK/3cAB+zeIgeJ3kA0cWyviLMi4xSzjOsi4qwijMiXdbNvzEcedSyzqAb/pDyck/Sh6D4ZTHjjZ2pOwYHh96kq8lffizwyAf/hd5v+Tx7YoN8isPh5z3JE9GFp6Q9ECxYQ8l9HSve9g9cYyYYNnQwmz6GQ+7Z4GkIudaVoVfaraMXXMRRmi6ZcaJFIxLdQ2Y6T73vcuyDFwmuSDznRRxXkZlWmEKQtlcy8oweFI2z7IqzHYpZ2qThfhBb7asCvMhyunrW4kDWRxYizC9oWyOZVWukZTH2UTX8FhwQSZxKeimKV9hWZmmilwgKaub0TKyUx7nc1n4WT7vYQXWLtzwDsvKNFWEClB2oWVV7pGUj7MsE7skK7U6WPg85GGJporwSFFW942vk1w3K1Rip4dJvpVxJlukqSJMEimLa45W3pCfepiPFyXrhzr2yBc8LNFUEToPyuqWr+yyvONhPnhsuGldn79DrvewRFNFaFOU1W0J8Su/7GE+VkpuSlecgjnRWx6WaKoIq8HfPawwSnLeo5ZlJDZMBscUb8r3PSzRVBHmcPs8rMBWFOettiwjbDxzYaYrKV6Vn3hYoqkidOe0rRTxvLpR/4BhLcCF6zaf2cj7wsMSTRV5TaYqDyyTOe8iyzLCoMfOII9DCo6zn9tKU0VoU7StFLdKzuMRyw4rRRZZKZi+MOVupakidR0EPCY5j0afnQ/kNg8r1HWlTRXhseLxSvGK/MbD/LAntdfDCsslH7h1cGuqCA29bv62RTIg9gR2BdnUTi15WTtQzn5UkaMlHUFqGsJW01UeVmADnSlKT2BHhW837ib2Etobk8aeEF/m1C15c8HuIvcpbopnhZ10bpBa0uZkuuQ+LKx6AhvW3ICGHWEtwR5wO7IhfYoEXkMUy1gtRuLOP0vdnhCXtLwXiTDH4li7xq0dZrXF4yzcIrxK4NgBvWprF/r+3TIOVKznZ7QpL3/ieaNlsYytH6DXYxHHFi1bST0j7orz0pMtHtpNLml7rGm4/pC8BeClzq8yPhY5ZWv2EdnTX6MI7xIvkUyzc3m5jC92RhhhhCyE8D/nd6KN+0AUXgAAAABJRU5ErkJggg=="></a></div></div></li></a>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="ot"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

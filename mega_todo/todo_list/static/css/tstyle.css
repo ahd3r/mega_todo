@@ -1,0 +1,48 @@
+.body1{
+    font-family: 'Roboto', sans-serif;
+    background: #707070;
+    color: white;
+}
+.main{
+    margin-top: 10%;
+    border-radius: 20px;
+    background: #343a40;
+}
+.line{
+    height: 1px;
+    background:White;
+}
+.ot{
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+.del{
+    margin-top: 5px;
+}
+.done{
+    text-decoration: line-through;
+}
+.task{
+    color: black;
+}
+li{
+	list-style: none;
+	font-size: 25px;
+}
+ul{
+	margin-left: 0;
+	padding: 0;
+}
+a:hover{
+    text-decoration: none;
+    color: black;
+}
+.more{
+	background-color: grey;
+}
+.more:hover{
+	background-color: rgb(150, 150, 150);
+}
+.e{
+    margin-right: 50px;
+}
