@@ -16,3 +16,8 @@ class SignUpForm(forms.Form):
 class EditOneForm(forms.Form):
     name_task=forms.CharField(max_length=100, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Type your task'}))
     done_task=forms.BooleanField()
+
+class ResetPasswordForm(forms.Form):
+    old_password=forms.CharField(max_length=30, widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Type current password'}))
+    new_password1=forms.CharField(max_length=30, widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Type new password'}))
+    new_password2=forms.CharField(max_length=30, widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Confirm new password'}))

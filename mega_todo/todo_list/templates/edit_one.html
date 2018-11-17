@@ -25,21 +25,18 @@
             <div class="col"></div>
             <div class="col-10">
                 <div class="ot"></div>
-                <form action="edit_one/{{ t_id_edit }}" method="post">
+                <form id="sub" action="http://127.0.0.1:8000/edit_one/{{ t_id_edit }}" method="post">
                     {% csrf_token %}
                     {{ EditOneForm.name_task }}
                     <div class="ot"></div>
-                    <div class="form-group">
-                        <p>{{ EditOneForm.done_task }}
-                        Done</p>
-                    </div>
+                    <p>{{ EditOneForm.done_task }} Done</p>
                     <div class="line ot"></div>
-                    <input type="hidden" id="sub">
+                    <input type="hidden">
                 </form>
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col"><a href="/"><button class="btn">Back</button></a></div>
-                        <div class="col"><p class="text-right"><a></a><input type="submit" class="btn" value="Done"></a></p></div> <!-- href="javascpipt={getElementById(sub).submit}" -->
+                        <div class="col"><p class="text-right"><a href="javascript:{document.getElementById('sub').submit()}"><input type="submit" class="btn" value="Done"></a></p></div>
                     </div>
                 </div>
             </div>
