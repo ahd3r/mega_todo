@@ -5,6 +5,8 @@ token_for_reset_password=models.CharField(max_length=30, null=True, blank=True)
 
 Email must be real, that's why make validator and then accept by confirm letter. Password must be difficult, that's why you must to show status, how difficulty is your password. Login and signup must be in one page. 
 
+
+
 /* Add an adaptation for every page by bootstrap */
 
 Set sendgrid on site 
